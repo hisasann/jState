@@ -2,7 +2,7 @@
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<title>history.replaceState、history.pushStateのデモ</title>
+	<title>jState - popstate or hashchange</title>
 	<style type="text/css" media="screen">
 		#counter {
 			color: red;
@@ -55,10 +55,11 @@
 </head>
 <body>
 	
-	<h1>history.replaceState、history.pushStateのデモ</h1>
+	<h1>jState - popstate or hashchange</h1>
 	
 	<h2>
-		戻るや進むボタンをクリックされた場合はpopstateイベントがfireされる
+		戻るや進むボタンをクリックされた場合はpopstateイベントがfireされる<br>
+		ただし、pushStateに対応していないブラウザの場合はhashchangeを呼び出します。
 	</h2>
 	
 	<h3>stateデータ</h3>
