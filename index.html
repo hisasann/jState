@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>history.replaceState、history.pushStateのデモ</title>
+	<style type="text/css" media="screen">
+		#counter {
+			color: red;
+			font-size: 140%;
+		}
+	</style>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/jquery-jState.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			var data = $("#data"),
+				i = 0;
+
+			$.jState.setup({
+				hashchange: function(hash) {
+					data.html(hash);
+					$("#event").html("hashchange");
+					console.log("hashchange: ", ++i);
+				},
+				popstate: function(state) {
+					popstateEvent(state, "");
+				}
+			});
+			
+			$("#link a").click(function(event) {
+				event.preventDefault();
+				
+				$.jState.modify($(this).attr("href"), {
+					isReplace: false
+				});
+
+				// pushStateは戻るや進むのときにfireされるので、
+				// クリック時のイベント時にはfireされない。
+				// よって、hashchangeには必要ないが、処理を呼んであげる必要がある。
+				if ($.support.pushState) {
+					popstateEvent($(this).attr("href"), "擬似");
+				}
+			});
+
+			function popstateEvent(state, s) {
+				data.html(state);
+				$("#event").html("popstate");
+				console.log(s + "popstate: ", ++i);
+			}
+
+			$("#pushState").html("$.support.pushState: " + $.support.pushState);
+		});
+		
+	</script>
+</head>
+<body>
+	
+	<h1>history.replaceState、history.pushStateのデモ</h1>
+	
+	<h2>
+		戻るや進むボタンをクリックされた場合はpopstateイベントがfireされる
+	</h2>
+	
+	<h3>stateデータ</h3>
+	
+	<p id="data"></p>
+	
+	<h3>pushStateが有効か</h3>
+	
+	<p id="pushState"></p>
+
+	<h3>イベント</h3>
+	
+	<p id="event"></p>
+	
+	<h3>pushStateによる画面遷移</h3>
+	
+	<div id="link">
+		<div><a href="/jState/hoge?hoge#hoge">/jState/hoge?hoge#hoge</a></div>
+		<div><a href="/jState/foo?foo#foo">/jState/foo?foo#foo</a></div>
+	</div>
+	
+</body>
+</html>
